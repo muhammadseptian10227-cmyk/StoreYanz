@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Keren - Store</title>
+    <style>
+        /* Reset dan Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to left, skyblue, white);
+            color: #333;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header dengan Logo dan Animasi */
+        header {
+            background: linear-gradient(to right,skyblue, white);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px white(0,0,0,0.1);
+            animation: slideIn 2s ease-out;
+            border-radius: 1em;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, blue, #fff);
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            animation: rotate 4s infinite linear;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .logo::before {
+            content: 'Yanshop';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+        h1 {
+            margin-top: 10px;
+            font-size: 2em;
+            color: ghostwhite;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-weight: bold;
+            animation-name: 'Yans';
+            text-shadow: 4px 4px 5px;
+        }
+
+        /* Konten Utama */
+        main {
+            flex: 1;
+            padding: 20px;
+            padding-bottom: 80px; /* Ruang untuk bottom nav */
+        }
+
+        /* Form Upload Produk */
+        .upload-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .upload-form h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .upload-form input, .upload-form textarea, .upload-form select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .upload-form button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+        .upload-form button:hover {
+            transform: scale(1.05);
+        }
+        #imagePreview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Daftar Produk */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: bounceIn 0.5s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .product h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+        .product p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .bottom-nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            text-align: center;
+            transition: color 0.3s;
+        }
+        .bottom-nav a:hover {
+            color: #667eea;
+        }
+        .bottom-nav .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Responsif */
+        @media (max-width: 600px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"></div>
+        <h1>Yansz Market☛︎</h1>
+    </header>
+
+    <main>
+        <section class="upload-form">
+            <h2>Upload Produk</h2>
+            <input type="file" id="productImage" accept="image/*">
+            <img id="imagePreview" alt="Preview Gambar">
+            <input type="text" id="productName" placeholder="Nama Produk">
+            <textarea id="productDesc" placeholder="Deskripsi Produk"></textarea>
+            <select id="productPrice">
+                <option value="">Pilih Harga</option>
+                <option value="Rp 50.000">Rp 50.000</option>
+                <option value="Rp 100.000">Rp 100.000</option>
+                <option value="Rp 200.000">Rp 200.000</option>
+            </select>
+            <button id="uploadBtn">Upload Produk</button>
+        </section>
+
+        <section class="products" id="productsList">
+            <!-- Produk akan ditampilkan di sini -->
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#home" id="navHome">
+            <span class="icon">🏠</span>
+            Home
+        </a>
+        <a href="#products" id="navProducts">
+            <span class="icon">📦</span>
+            Produk
+        </a>
+        <a href="#cart" id="navCart">
+            <span class="icon">🛒</span>
+            Keranjang
+        </a>
+        <a href="#profile" id="navProfile">
+            <span class="icon">👤</span>
+            Profil
+        </a>
+    </nav>
+
+    <script>
+        // Array untuk menyimpan produk (simulasi penyimpanan lokal)
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
+        // Elemen DOM
+        const imageInput = document.getElementById('productImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const nameInput = document.getElementById('productName');
+        const descInput = document.getElementById('productDesc');
+        const priceSelect = document.getElementById('productPrice');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const productsList = document.getElementById('productsList');
+
+        // Preview gambar saat upload
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Upload produk
+        uploadBtn.addEventListener('click', function() {
+            const name = nameInput.value.trim();
+            const desc = descInput.value.trim();
+            const price = priceSelect.value;
+            const image = imagePreview.src;
+
+            if (!name || !desc || !price || !image) {
+                alert('Harap isi semua field dan upload gambar!');
+                return;
+            }
+
+            // Tambahkan produk ke array
+            const product = { name, desc, price, image };
+            products.push(product);
+
+            // Simpan ke localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Reset form
+            nameInput.value = '';
+            descInput.value = '';
+            priceSelect.value = '';
+            imagePreview.style.display = 'none';
+            imageInput.value = '';
+
+            // Render ulang produk
+            renderProducts();
+
+            alert('Produk berhasil diupload!');
+        });
+
+        // Render produk
+        function renderProducts() {
+            productsList.innerHTML = '';
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.desc}</p>
+                    <p><strong>${product.price}</strong></p>
+                `;
+                productsList.appendChild(productDiv);
+            });
+        }
+
+        // Bottom Navigation (simulasi klik)
+        document.getElementById('navHome').addEventListener('click', () => alert('Navigasi ke Home'));
+        document.getElementById('navProducts').addEventListener('click', () => alert('Navigasi ke Produk'));
+        document.getElementById('navCart').addEventListener('click', () => alert('Navigasi ke Keranjang'));
+        document.getElementById('navProfile').addEventListener('click', () => alert('Navigasi ke Profil'));
+
+        // Render produk saat load
+        renderProducts();
+    </script>
+</body>
+</html>
